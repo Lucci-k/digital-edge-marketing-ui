@@ -2,15 +2,7 @@
 
 import React from 'react';
 
-interface PrivacyPolicyProps {
-  websiteName: string;
-  businessName: string;
-  email: string;
-  address: string;
-  date: string;
-}
-
-const PrivacyPolicy: React.FC<PrivacyPolicyProps> = () => {
+const PrivacyPolicy: React.FC = () => {
 
   const websiteName = "DigitalEdge.com";
   const businessName = "Digital Edge";
