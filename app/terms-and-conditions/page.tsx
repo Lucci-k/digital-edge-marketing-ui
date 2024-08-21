@@ -2,16 +2,7 @@
 
 import React from 'react';
 
-interface TermsAndConditionsProps {
-  websiteName: string;
-  businessName: string;
-  email: string;
-  jurisdiction: string;
-}
-
-
-
-const TermsAndConditions: React.FC<TermsAndConditionsProps> = () => {
+const TermsAndConditions: React.FC = () => {
   
   const websiteName = "DigitalEdge.com";
   const businessName = "Digital Edge";
