@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import BlogForm from './BlogForm'; // Import the client component
+import { use, useEffect, useState } from 'react';
 
 interface BlogPost {
   title: string;
@@ -9,8 +12,19 @@ interface BlogPost {
   href: string;
 }
 
-export default async function Blog() {
-  const blog = await fetchBlogData();
+export default function Blog() {
+  const [blog, setBlog] = useState<BlogPost[]>([])
+
+  useEffect(() => {
+    fetchBlogData()
+  }, [])
+
+  async function fetchBlogData(): Promise<void> {
+    const res = await fetch('/api/blog')
+    const data = await res.json()
+    console.log('data', data)
+    setBlog(data.blog)
+  }
 
   return (
     <main className="flex flex-grow flex-col items-center justify-between">
@@ -42,20 +56,4 @@ export default async function Blog() {
       </section>
     </main>
   );
-}
-
-async function fetchBlogData(): Promise<BlogPost[]> {
-  const baseUrl =
-    process.env.NODE_ENV === "production" && process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
-
-  try {
-    const res = await fetch(`${baseUrl}/api/blog`);
-    const data = await res.json();
-    return data.blog || [];
-  } catch (error) {
-    console.error("Failed to fetch blog data during build:", error);
-    return [];
-  }
 }

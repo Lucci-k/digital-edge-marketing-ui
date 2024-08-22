@@ -1,4 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse, NextRequest } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 // Example blog data
 const blogPosts = [
@@ -32,13 +33,11 @@ const blogPosts = [
   }
 ];
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'GET') {
-    // Respond with blog data
-    res.status(200).json({ blog: blogPosts });
-  } else {
-    // Handle any other HTTP methods
-    res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+export async function GET(req: NextRequest) {
+
+  const path = req.nextUrl.searchParams.get('path') || '/'
+
+  revalidatePath(path)
+
+  return NextResponse.json({ blog: blogPosts })
 }
